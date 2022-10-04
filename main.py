@@ -7,6 +7,7 @@ planes_miami = TimeSeries()
 planes_dulles = TimeSeries()
 planes_design = TimeSeries()
 
+in_air = []
 
 """
 Does the thing that makes the simulation simulate stuff
@@ -18,18 +19,17 @@ num_steps: number of steps
 
 
 def run_simulation(steps):
-    in_air = []
     planes_miami[0] = 12
     planes_dulles[0] = 15
     planes_design[0] = 25
     for i in range(1, steps):
-        in_air = step(in_air)
+        step()
         planes_miami[i] = planes.Miami
         planes_dulles[i] = planes.Dulles
         planes_design[i] = planes.Design
 
 
-def takeoff(origin, dest, count, time, in_air):
+def takeoff(origin, dest, count, time):
     planes[origin] -= count
     for _ in range(count):
         in_air.append([dest, time])
@@ -43,13 +43,13 @@ p2: probability 2
 """
 
 
-def step(in_air):
-    in_air = takeoff("Miami", "Dulles", 6, 9, in_air)
-    in_air = takeoff("Miami", "Design", 4, 8, in_air)
-    in_air = takeoff("Dulles", "Miami", 7, 9, in_air)
-    in_air = takeoff("Dulles", "Design", 1, 3, in_air)
-    in_air = takeoff("Design", "Miami", 3, 9, in_air)
-    in_air = takeoff("Design", "Dulles", 1, 3, in_air)
+def step():
+    takeoff("Miami", "Dulles", 6, 9)
+    takeoff("Miami", "Design", 4, 8)
+    takeoff("Dulles", "Miami", 7, 9)
+    takeoff("Dulles", "Design", 1, 3)
+    takeoff("Design", "Miami", 3, 9)
+    takeoff("Design", "Dulles", 1, 3)
     temp = in_air
     count = 0
     for i in range(len(in_air)):
@@ -61,7 +61,6 @@ def step(in_air):
         temp[i][1] -= 1
         count += 1
     in_air = temp
-    return in_air
 
 
 run_simulation(100)
