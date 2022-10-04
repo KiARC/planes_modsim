@@ -30,6 +30,7 @@ def run_simulation(steps):
 
 
 def takeoff(origin, dest, count, time):
+    global in_air
     planes[origin] -= count
     for _ in range(count):
         in_air.append([dest, time])
@@ -44,6 +45,7 @@ p2: probability 2
 
 
 def step():
+    global in_air
     takeoff("Miami", "Dulles", 6, 9)
     takeoff("Miami", "Design", 4, 8)
     takeoff("Dulles", "Miami", 7, 9)
