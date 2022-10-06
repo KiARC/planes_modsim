@@ -1,4 +1,5 @@
 from modsim import State, TimeSeries
+from random import randint
 
 # Constants (Start, Dest, volume, time)
 planes = State(Miami=0, Dulles=0, Design=0)
@@ -43,15 +44,16 @@ p1: probability 1
 p2: probability 2
 """
 
-
 def step():
     global in_air
-    takeoff("Miami", "Dulles", 6, 9)
-    takeoff("Miami", "Design", 4, 8)
-    takeoff("Dulles", "Miami", 7, 9)
-    takeoff("Dulles", "Design", 1, 3)
-    takeoff("Design", "Miami", 3, 9)
-    takeoff("Design", "Dulles", 1, 3)
+    randomInts = [random.randint(1, 12) for i in range(12)]
+
+    takeoff("Miami", "Dulles", randomInts[0], randomInts[1])
+    takeoff("Miami", "Design", randomInts[2], randomInts[3])
+    takeoff("Dulles", "Miami", randomInts[5], randomInts[4])
+    takeoff("Dulles", "Design", randomInts[7], randomInts[6])
+    takeoff("Design", "Miami", randomInts[9], randomInts[10])
+    takeoff("Design", "Dulles", randomInts[11], randomInts[12])
     temp = in_air
     count = 0
     for i in range(len(in_air)):
