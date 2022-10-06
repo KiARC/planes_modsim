@@ -1,4 +1,4 @@
 # Todolist
 
 - [x] Fix the variable problem somehow
-- [ ] Fix negatives somehow
+- [ ] Fix negatives somehow 

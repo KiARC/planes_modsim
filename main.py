@@ -3,6 +3,17 @@ from modsim import State, TimeSeries
 # Constants (Start, Dest, volume, time)
 planes = State(Miami=0, Dulles=0, Design=0)
 
+capacities = {
+    "Miami":28,
+    "Dulles":40,
+    "Design":50
+}
+
+late = {
+    "Miami":0,
+    "Dulles":0,
+    "Design":0
+}
 planes_miami = TimeSeries()
 planes_dulles = TimeSeries()
 planes_design = TimeSeries()
@@ -54,11 +65,16 @@ def step():
     takeoff("Design", "Dulles", 1, 3)
     temp = in_air
     count = 0
-    for i in range(len(in_air)):
-        if in_air[1] == 1:
-            del temp[i]
-            dest, _ = i
-            planes[dest] += 1
+    for i in range(len(in_air) - 1):
+        print(in_air[i])
+        if in_air[i][1] == 1:
+            dest = in_air[i][0]
+            if  (planes[dest] <= capacities[dest]):
+                del temp[i]
+                planes[dest] += 1
+            else:
+                temp[i][1] += 1
+                late[dest] += 1
             continue
         temp[i][1] -= 1
         count += 1
@@ -75,5 +91,8 @@ decorate(title='Wheaton-SilverSpring Bikeshare',
          ylabel='Number of bikes per location')
 plt.show()
 """
-print(
-    f"Miami:\n{planes_miami}\nDulles:\n{planes_dulles}\nDesign:\n{planes_design}")
+print(f"Miami:\n{planes_miami}\nDulles:\n{planes_dulles}\nDesign:\n{planes_design}")
+late_miami = late["Miami"]
+late_dulles = late["Dulles"]
+late_design = late["Design"]
+print(f"Late @...\nMiami:{late_miami}\nDulles:{late_dulles}\nDesign:{late_design}")
