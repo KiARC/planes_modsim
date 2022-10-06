@@ -46,14 +46,14 @@ p2: probability 2
 
 def step():
     global in_air
-    randomInts = [random.randint(1, 12) for i in range(12)]
+    randomInts = [randint(1, 12) for i in range(12)]
 
     takeoff("Miami", "Dulles", randomInts[0], randomInts[1])
     takeoff("Miami", "Design", randomInts[2], randomInts[3])
-    takeoff("Dulles", "Miami", randomInts[5], randomInts[4])
-    takeoff("Dulles", "Design", randomInts[7], randomInts[6])
-    takeoff("Design", "Miami", randomInts[9], randomInts[10])
-    takeoff("Design", "Dulles", randomInts[11], randomInts[12])
+    takeoff("Dulles", "Miami", randomInts[4], randomInts[5])
+    takeoff("Dulles", "Design", randomInts[6], randomInts[7])
+    takeoff("Design", "Miami", randomInts[8], randomInts[9])
+    takeoff("Design", "Dulles", randomInts[10], randomInts[11])
     temp = in_air
     count = 0
     for i in range(len(in_air)):
