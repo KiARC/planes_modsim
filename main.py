@@ -5,15 +5,36 @@ from random import randint
 planes = State(Miami=0, Dulles=0, Design=0)
 
 capacities = {
-    "Miami":28,
-    "Dulles":40,
-    "Design":50
+    "Miami": 28,
+    "Dulles": 40,
+    "Design": 50
 }
 
 late = {
-    "Miami":0,
-    "Dulles":0,
-    "Design":0
+    "Miami": 0,
+    "Dulles": 0,
+    "Design": 0
+}
+
+from_to = {
+    "Dulles": 16,
+    "Design": 20,
+    "Miami": 24
+}
+
+hours = {
+    "Miami": {
+        "Dulles":2,
+        "Design": 4
+    },
+    "Dulles": {
+        "Miami": 2,
+        "Design": 6
+    },
+    "Design": {
+        "Miami": 4,
+        "Dulles": 6
+    }
 }
 planes_miami = TimeSeries()
 planes_dulles = TimeSeries()
@@ -48,6 +69,7 @@ def takeoff(origin, dest, count, time):
         in_air.append([dest, time])
     return in_air
 
+
 """
 A single step in the simulation
 
@@ -55,28 +77,29 @@ p1: probability 1
 p2: probability 2
 """
 
+
 def step():
     global in_air
-    randomInts = [randint(1, 12) for i in range(12)]
-
-    takeoff("Miami", "Dulles", randomInts[0], randomInts[1])
-    takeoff("Miami", "Design", randomInts[2], randomInts[3])
-    takeoff("Dulles", "Miami", randomInts[4], randomInts[5])
-    takeoff("Dulles", "Design", randomInts[6], randomInts[7])
-    takeoff("Design", "Miami", randomInts[8], randomInts[9])
-    takeoff("Design", "Dulles", randomInts[10], randomInts[11])
+    for source in from_to:
+        first = randint(from_to[source] - 8)
+        second = from_to[source] - first
+        s = False
+        for i in ["Dulles", "Design", "Miami"]:
+            if source != i:
+                if not s:
+                    takeoff(source, i, first, hours[source][i])
     temp = in_air
     count = 0
     for i in range(len(in_air) - 1):
         print(in_air[i])
         if in_air[i][1] == 1:
-            dest = in_air[i][0]
-            if  (planes[dest] <= capacities[dest]):
+            source = in_air[i][0]
+            if (planes[source] <= capacities[source]):
                 del temp[i]
-                planes[dest] += 1
+                planes[source] += 1
             else:
                 temp[i][1] += 1
-                late[dest] += 1
+                late[source] += 1
             continue
         temp[i][1] -= 1
         count += 1
@@ -93,8 +116,10 @@ decorate(title='Wheaton-SilverSpring Bikeshare',
          ylabel='Number of bikes per location')
 plt.show()
 """
-print(f"Miami:\n{planes_miami}\nDulles:\n{planes_dulles}\nDesign:\n{planes_design}")
+print(
+    f"Miami:\n{planes_miami}\nDulles:\n{planes_dulles}\nDesign:\n{planes_design}")
 late_miami = late["Miami"]
 late_dulles = late["Dulles"]
 late_design = late["Design"]
-print(f"Late @...\nMiami:{late_miami}\nDulles:{late_dulles}\nDesign:{late_design}")
+print(
+    f"Late @...\nMiami:{late_miami}\nDulles:{late_dulles}\nDesign:{late_design}")
