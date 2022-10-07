@@ -81,7 +81,7 @@ p2: probability 2
 def step():
     global in_air
     for source in from_to:
-        first = randint(from_to[source] - 8)
+        first = randint(0, from_to[source] - 8)
         second = from_to[source] - first
         s = False
         for i in ["Dulles", "Design", "Miami"]:
