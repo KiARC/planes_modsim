@@ -64,9 +64,16 @@ def run_simulation(steps):
 
 def takeoff(origin, dest, count, time):
     global in_air
-    planes[origin] -= count
-    for _ in range(count):
-        in_air.append([dest, time])
+    if planes[origin] < count:
+        available = planes[origin] - count
+        #late[origin] += count - available
+        planes[origin] = 0
+        for _ in range(available):
+            in_air.append([dest, time])    
+    else:
+        planes[origin] -= count
+        for _ in range(count):
+            in_air.append([dest, time])
     return in_air
 
 
@@ -122,8 +129,8 @@ print(
 late_miami = late["Miami"]
 late_dulles = late["Dulles"]
 late_design = late["Design"]
-plt.bar(["Miami", "Dulles", "Design"], [late_miami, late_dulles, late_design], color='maroon', width=0.4)
-plt.xlabel("Place")
+plt.bar(["Miami", "Dulles", "Design"], [late_miami, late_dulles, late_design], color=["red", "green", "blue"], width=1)
+plt.xlabel("Airport")
 plt.ylabel("Hours late")
 plt.title("Number of hours worth of late time")
 plt.show()
