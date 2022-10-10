@@ -95,6 +95,9 @@ def step():
             if source != i:
                 if not s:
                     takeoff(source, i, first, hours[source][i])
+                    s = True
+                else:
+                    takeoff(source, i, second, hours[source][i])
     temp = in_air.copy()
     count = 0
     for i in range(len(temp)):
