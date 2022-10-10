@@ -1,8 +1,8 @@
-from modsim import State, TimeSeries
+from modsim import  *
 from random import randint
 
 # Constants (Start, Dest, volume, time)
-planes = State(Miami=0, Dulles=0, Design=0)
+planes = State(Miami=28, Dulles=40, Design=50)
 
 capacities = {
     "Miami": 28,
@@ -108,18 +108,22 @@ def step():
 
 run_simulation(100)
 
-""" Graphy stuff
-results_wheaton.plot(label="Wheaton")
-results_silver_spring.plot(label="Silver Spring")
-decorate(title='Wheaton-SilverSpring Bikeshare',
-         xlabel='Time step (min)', 
-         ylabel='Number of bikes per location')
+# Graphy stuff
+planes_miami.plot(label="Miami")
+planes_dulles.plot(label="Dulles")
+planes_design.plot(label="Design")
+decorate(title='Planes',
+         xlabel='Time step (hr)', 
+         ylabel='Number of planes per location')
 plt.show()
-"""
+
 print(
     f"Miami:\n{planes_miami}\nDulles:\n{planes_dulles}\nDesign:\n{planes_design}")
 late_miami = late["Miami"]
 late_dulles = late["Dulles"]
 late_design = late["Design"]
-print(
-    f"Late @...\nMiami:{late_miami}\nDulles:{late_dulles}\nDesign:{late_design}")
+plt.bar(["Miami", "Dulles", "Design"], [late_miami, late_dulles, late_design], color='maroon', width=0.4)
+plt.xlabel("Place")
+plt.ylabel("Hours late")
+plt.title("Number of hours worth of late time")
+plt.show()
