@@ -88,22 +88,22 @@ def step():
             if source != i:
                 if not s:
                     takeoff(source, i, first, hours[source][i])
-    temp = in_air
+    temp = in_air.copy()
     count = 0
-    for i in range(len(in_air) - 1):
-        print(in_air[i])
-        if in_air[i][1] == 1:
-            source = in_air[i][0]
+    for i in range(len(temp)):
+        j = i - count
+        if  temp[j][1] == 1:
+            source = temp[j][0]
             if (planes[source] <= capacities[source]):
-                del temp[i]
+                del temp[j]
+                count += 1
                 planes[source] += 1
             else:
-                temp[i][1] += 1
+                temp[j][1] += 1
                 late[source] += 1
             continue
-        temp[i][1] -= 1
-        count += 1
-    in_air = temp
+        temp[j][1] -= 1
+    in_air = temp.copy()
 
 
 run_simulation(100)
