@@ -66,8 +66,8 @@ def takeoff(origin, dest, count, time):
     global in_air
     if planes[origin] < count:
         available = planes[origin] - count
-        #late[origin] += count - available
-        planes[origin] = 0
+        late[origin] += count - available
+        planes[origin] -= available
         for _ in range(available):
             in_air.append([dest, time])    
     else:
@@ -102,17 +102,16 @@ def step():
     count = 0
     for i in range(len(temp)):
         j = i - count
-        if  temp[j][1] == 1:
-            source = temp[j][0]
-            if (planes[source] <= capacities[source]):
+        if  temp[j][1] <= 1:
+            dest = temp[j][0]
+            if (planes[dest] <= capacities[dest]):
                 del temp[j]
                 count += 1
-                planes[source] += 1
+                planes[dest] += 1
             else:
-                temp[j][1] += 1
-                late[source] += 1
-            continue
-        temp[j][1] -= 1
+                late[dest] += 1
+        else:
+            temp[j][1] -= 1
     in_air = temp.copy()
 
 
